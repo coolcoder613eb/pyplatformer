@@ -11,15 +11,27 @@ w['bg']='#ffffff'
 
 screen = PhotoImage(file='assets/screen.png')
 g = PhotoImage(file='assets/grass1.png')
+d = PhotoImage(file='assets/soil1.png')
 
 
 def read(file):
-    
-    tiles.append(c.create_image(cr[29],cr[14],anchor = 'nw',image = g))
+    with open(file,'r', encoding="utf-8") as f:
+        r = f.read()
+        s = r.splitlines()
+        l = []
+        for x in s:
+            l.append(x.split(' '))
+
+        for y in range(14):
+            for x in range(29):
+                if l[y][x] == 'g':
+                    tiles.append(c.create_image(cr[x],cr[y],anchor = 'nw',image = g))
+                if l[y][x] == 'd':
+                    tiles.append(c.create_image(cr[x],cr[y],anchor = 'nw',image = d))
 
 
 
-cr=[0,4, 46, 88, 130, 172, 214, 256, 298, 340, 382, 424, 466, 508, 550, 592, 634, 676, 718, 760, 802, 844, 886, 928, 970, 1012, 1054, 1096, 1138, 1180]
+cr=[4, 46, 88, 130, 172, 214, 256, 298, 340, 382, 424, 466, 508, 550, 592, 634, 676, 718, 760, 802, 844, 886, 928, 970, 1012, 1054, 1096, 1138, 1180]
 
 tiles=[]
 

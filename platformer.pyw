@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import *
+import pygame as pg
 
 w = Tk()
 w.state('zoomed')
@@ -16,11 +17,65 @@ p = PhotoImage(file='assets/player1_01.png')
 l2 = PhotoImage(file='assets/lava_l131.png')
 l1 = PhotoImage(file='assets/lava_r161.png')
 
+vec = pg.math.Vector2
+
+jumps = 0
+vx = 0
+vy = 0
 
 class Player():
     def __init__(self,x,y):
         self.er = c.create_image(cr[x],cr[y],anchor = 'sw',image = p)
+        
+        self.pos = vec((10, 385))
+        self.vel = vec(0,0)
+        self.acc = vec(0,0)
+        def move(self):
+            self.acc = vec(0,0.5)
+ 
+            pressed_keys = pygame.key.get_pressed()
+                    
+            if pressed_keys[K_LEFT]:
+                self.acc.x = -ACC
+            if pressed_keys[K_RIGHT]:
+                self.acc.x = ACC
+            
+            self.acc.x += self.vel.x * FRIC
+            self.vel += self.acc
+            self.pos += self.vel + 0.5 * self.acc
 
+            if self.pos.x > WIDTH:
+                self.pos.x = WIDTH
+            if self.pos.x < 0:
+                self.pos.x = 0
+        def jump(self):
+            global jumps, vy
+            if jumps == 0, or jumps == 1:
+                vy += 33
+                jumps += 1
+
+def iscolliding():
+    for x in tiles:
+        p = c.coords(play.er)
+        t = c.coords(x)
+        if t[1] <= p[1]):
+            c.coords(play.er,p[0],t[1])
+            return True##############
+    return False
+
+def update():
+    keys = pg.key.get_pressed()
+    for x in tiles
+
+
+    if keys[K_LEFT]:
+        player.acc.x = -ACC
+    if keys[K_RIGHT]:
+        player.acc.x = ACC      
+
+
+def touch():
+    global vx,vy,jumps
 
 def read(file):
     with open(file,'r', encoding="utf-8") as f:

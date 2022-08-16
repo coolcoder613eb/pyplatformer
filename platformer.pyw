@@ -2,6 +2,17 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import *
 import pygame as pg
+from pynput import keyboard
+from pynput.keyboard import Key
+import sys
+import time
+pg.init()
+
+
+HEIGHT = 560
+WIDTH = 1120
+ACC = 0.5
+FRIC = -0.12
 
 w = Tk()
 w.state('zoomed')
@@ -17,61 +28,88 @@ p = PhotoImage(file='assets/player1_01.png')
 l2 = PhotoImage(file='assets/lava_l131.png')
 l1 = PhotoImage(file='assets/lava_r161.png')
 
+
+pressed_keys = set()
+
 vec = pg.math.Vector2
 
 jumps = 0
 vx = 0
 vy = 0
 
+
+def close():
+    w.quit()
+    listener.stop()
+    sys.exit()
+
+def on_press(key):
+    global pressed_keys
+    print(pressed_keys)
+    pressed_keys.add(key)
+
+def on_release(key):
+    global pressed_keys
+    print(pressed_keys)
+    #try:
+    pressed_keys.remove(key)
+    #except Error as err:
+        #print(err)
+
 class Player():
     def __init__(self,x,y):
-        self.er = c.create_image(cr[x],cr[y],anchor = 'sw',image = p)
         
-        self.pos = vec((10, 385))
+        
+        self.pos = vec((cr[x], cr[y]))
         self.vel = vec(0,0)
         self.acc = vec(0,0)
-        def move(self):
-            self.acc = vec(0,0.5)
- 
-            pressed_keys = pygame.key.get_pressed()
-                    
-            if pressed_keys[K_LEFT]:
-                self.acc.x = -ACC
-            if pressed_keys[K_RIGHT]:
-                self.acc.x = ACC
-            
-            self.acc.x += self.vel.x * FRIC
-            self.vel += self.acc
-            self.pos += self.vel + 0.5 * self.acc
 
-            if self.pos.x > WIDTH:
-                self.pos.x = WIDTH
-            if self.pos.x < 0:
-                self.pos.x = 0
-        def jump(self):
-            global jumps, vy
-            if jumps == 0, or jumps == 1:
-                vy += 33
-                jumps += 1
+        self.er = c.create_image(self.pos.x,self.pos.y,anchor = 'sw',image = p)
+    def move(self):
+        self.acc = vec(0,0.5)
 
-def iscolliding():
-    for x in tiles:
-        p = c.coords(play.er)
-        t = c.coords(x)
-        if t[1] <= p[1]):
-            c.coords(play.er,p[0],t[1])
-            return True##############
-    return False
+        #print('hello')        
+        if Key.left in pressed_keys:
+            self.acc.x = -ACC
+        if Key.right in pressed_keys:
+            self.acc.x = ACC
+        
+        self.acc.x += self.vel.x * FRIC
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
 
-def update():
-    keys = pg.key.get_pressed()
-    for x in tiles
+        if self.pos.x > WIDTH:
+            self.pos.x = WIDTH-1
+        if self.pos.x < 0:
+            self.pos.x = 1
+
+        c.coords(self.er,self.pos.x,self.pos.y)
+    def iscolliding():
+        for x in tiles:
+            p = c.coords(play.er)
+            t = c.coords(x)
+            if t[1] <= p[1]:
+                c.coords(play.er,p[0],t[1])
+                return True
+        return False
+    def update():
+    def jump(self):
+        global jumps, vy
+        if jumps == 0 or jumps == 1:
+            vy += 33
+            jumps += 1
 
 
-    if keys[K_LEFT]:
-        player.acc.x = -ACC
-    if keys[K_RIGHT]:
-        player.acc.x = ACC      
+
+##def update():
+##    keys = pg.key.get_pressed()
+##    for x in tiles:
+##
+##
+##    if keys[K_LEFT]:
+##        player.acc.x = -ACC
+##    if keys[K_RIGHT]:
+##        player.acc.x = ACC      
 
 
 def touch():
@@ -111,7 +149,7 @@ bads=[]
 c = Canvas(w,width = 1160,height = 560,bd = 1,relief = SOLID,bg = 'light sky blue')
 bg = c.create_image(3,3,anchor = 'nw',image = screen)
 
-player = c.create_image(cr[0],cr[8],anchor = 'sw',image = p)
+#player = c.create_image(cr[0],cr[8],anchor = 'sw',image = p)
 
 c.grid(column = 0,row = 2,padx = 5,pady = 5)
 
@@ -123,6 +161,19 @@ play = Player(0,8)
 print(play.er)
 
 
+listener = keyboard.Listener(
+    on_press=on_press,
+    on_release=on_release)
+listener.start()
+
+#w.protocol("WM_DELETE_WINDOW", close)
+
+while True:
+    w.update()
+    play.move()
+    time.sleep(1/60)
+
+listener.stop()
 w.mainloop()
 
 

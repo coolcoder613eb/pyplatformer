@@ -39,18 +39,20 @@ vy = 0
 
 
 def close():
-    w.quit()
-    listener.stop()
-    sys.exit()
+    global carryon
+    
+    
+    
+    carryon = False
 
 def on_press(key):
     global pressed_keys
-    print(pressed_keys)
+    #print(pressed_keys)
     pressed_keys.add(key)
 
 def on_release(key):
     global pressed_keys
-    print(pressed_keys)
+    #print(pressed_keys)
     #try:
     pressed_keys.remove(key)
     #except Error as err:
@@ -66,7 +68,7 @@ class Player():
 
         self.er = c.create_image(self.pos.x,self.pos.y,anchor = 'sw',image = p)
     def move(self):
-        self.acc = vec(0,0.5)
+        self.acc = vec(0100.5)
 
         #print('hello')        
         if Key.left in pressed_keys:
@@ -84,20 +86,31 @@ class Player():
             self.pos.x = 1
 
         c.coords(self.er,self.pos.x,self.pos.y)
-    def iscolliding():
-        for x in tiles:
-            p = c.coords(play.er)
+    def iscolliding(self):
+##        for x in tiles:
+##            p = c.coords(play.er)
+##            t = c.coords(x)
+##            if t[1] <= p[1]:
+##                #c.coords(play.er,p[0],t[1])
+##                return c.coords(x)
+##        return False
+        p = c.coords(self.er)
+        cd = c.find_overlapping(p[0], p[1]+1, p[0] + 40, p[1]+40)
+        for x in cd:
             t = c.coords(x)
-            if t[1] <= p[1]:
-                c.coords(play.er,p[0],t[1])
-                return True
-        return False
-    def update():
+            if x == self.er:
+                pass
+            else:
+                if t[1] <= p[1]:
+                    #c.coords(play.er,p[0],t[1])
+                    return c.coords(x)
+    def update(self):
+        hits = self.iscolliding()
+        if hits:
+            self.pos.y = hits[1]+39
+            self.vel.y = 0
     def jump(self):
-        global jumps, vy
-        if jumps == 0 or jumps == 1:
-            vy += 33
-            jumps += 1
+        self.vel.y = -15
 
 
 
@@ -167,13 +180,16 @@ listener = keyboard.Listener(
 listener.start()
 
 #w.protocol("WM_DELETE_WINDOW", close)
-
-while True:
+carryon = True
+while carryon:
     w.update()
     play.move()
+    play.update()
     time.sleep(1/60)
-
 listener.stop()
+w.quit()
+print('hello')
+sys.exit()
 w.mainloop()
 
 

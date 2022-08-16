@@ -62,7 +62,7 @@ class Player():
     def __init__(self,x,y):
         
         
-        self.pos = vec((cr[x], cr[y]))
+        self.pos = vec((cr[x], cr[y]-1))
         self.vel = vec(0,0)
         self.acc = vec(0,0)
 
@@ -95,9 +95,12 @@ class Player():
 ##                return c.coords(x)
 ##        return False
         p = c.coords(self.er)
-        cd = c.find_overlapping(p[0], p[1]+1, p[0] + 40, p[1]+40)
+        cd = c.find_overlapping(p[0], p[1], p[0]+40, p[1]+40)
+        print(cd)
         for x in cd:
             t = c.coords(x)
+            print('t[1]',t[1],'\np[1]',p[1])
+            c.delete(x)
             if x == self.er:
                 pass
             else:
@@ -160,7 +163,7 @@ tiles=[]
 bads=[]
 
 c = Canvas(w,width = 1160,height = 560,bd = 1,relief = SOLID,bg = 'light sky blue')
-bg = c.create_image(3,3,anchor = 'nw',image = screen)
+#bg = c.create_image(3,3,anchor = 'nw',image = screen)
 
 #player = c.create_image(cr[0],cr[8],anchor = 'sw',image = p)
 

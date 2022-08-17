@@ -85,7 +85,7 @@ class Player():
         if self.pos.x < 0:
             self.pos.x = 1
 
-        c.coords(self.er,self.pos.x,self.pos.y)
+        #c.coords(self.er,self.pos.x,self.pos.y)
     def iscolliding(self):
 ##        for x in tiles:
 ##            p = c.coords(play.er)
@@ -95,7 +95,7 @@ class Player():
 ##                return c.coords(x)
 ##        return False
         p = c.coords(self.er)
-        cd = c.find_overlapping(p[0], p[1], p[0]+40, p[1]+40)
+        cd = list(c.find_overlapping(p[0], p[1], p[0]+1, p[1]+40))
         print(cd)
         for x in cd:
             t = c.coords(x)

@@ -85,7 +85,7 @@ class Player():
         if self.pos.x < 0:
             self.pos.x = 1
 
-        #c.coords(self.er,self.pos.x,self.pos.y)
+        c.coords(self.er,self.pos.x,self.pos.y)
     def iscolliding(self):
 ##        for x in tiles:
 ##            p = c.coords(play.er)
@@ -95,22 +95,25 @@ class Player():
 ##                return c.coords(x)
 ##        return False
         p = c.coords(self.er)
-        cd = list(c.find_overlapping(p[0], p[1], p[0]+1, p[1]+40))
+        cd = c.find_overlapping(p[0]+1, p[1]-2, p[0], p[1]+40)
+        cd = list(cd)
+        del cd[0]
         print(cd)
-        for x in cd:
-            t = c.coords(x)
-            print('t[1]',t[1],'\np[1]',p[1])
-            c.delete(x)
-            if x == self.er:
-                pass
-            else:
-                if t[1] <= p[1]:
-                    #c.coords(play.er,p[0],t[1])
-                    return c.coords(x)
+        return cd
+##        for x in cd:
+##            t = c.coords(x)
+##            print('t[1]',t[1],'\np[1]',p[1])
+##            c.delete(x)
+##            if x == self.er:
+##                pass
+##            else:
+##                if t[1] <= p[1]:
+##                    #c.coords(play.er,p[0],t[1])
+##                    return c.coords(x)
     def update(self):
         hits = self.iscolliding()
         if hits:
-            self.pos.y = hits[1]+39
+            self.pos.y = c.coords(hits[0])[1]+39
             self.vel.y = 0
     def jump(self):
         self.vel.y = -15
@@ -186,8 +189,9 @@ listener.start()
 carryon = True
 while carryon:
     w.update()
-    play.move()
     play.update()
+    play.move()
+    
     time.sleep(1/60)
 listener.stop()
 w.quit()

@@ -1,6 +1,8 @@
 import pygame as pg
 from pygame.locals import (K_UP,K_DOWN,K_LEFT,K_RIGHT,K_ESCAPE,KEYDOWN,QUIT,)
 
+from sprites import Player, Platform
+
 pg.init()
 
 
@@ -14,8 +16,14 @@ vec = pg.math.Vector2  # 2 for two dimensional
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
- 
 
+cr=[20,60,100,140,180,220,260,300,340,380,420,460,500,540,580,620,660,700,740,780,820,860,900,940,980,1020,1060,1100,1140]
+ 
+G = 'assets/grass1.png'
+D = 'assets/soil1.png'
+P = 'assets/player1_01.png'
+L2 = 'assets/lava_l131.png'
+L1 = 'assets/lava_r161.png'
 
 size = (WIDTH,HEIGHT)
 
@@ -27,42 +35,46 @@ pg.display.set_caption("Platformer")
 running = True
 
 
-class Player(pg.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.surf = pg.image.load('assets/player1_01.png').convert_alpha()
-        self.rect = self.surf.get_rect(center = (10, 530))
 
-    def update(self, pressed_keys):
-        if pressed_keys[K_UP]:
-            self.rect.move_ip(0, -5)
-        if pressed_keys[K_DOWN]:
-            self.rect.move_ip(0, 5)
-        if pressed_keys[K_LEFT]:
-            self.rect.move_ip(-5, 0)
-        if pressed_keys[K_RIGHT]:
-            self.rect.move_ip(5, 0)
+def read(file):
+    with open(file,'r', encoding="utf-8") as f:
+        r = f.read()
+        s = r.splitlines()
+        l = []
+        for x in s:
+            l.append(x.replace('  ',' ').split(' '))
 
-        # Keep player on the screen
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.top <= 0:
-            self.rect.top = 0
-        if self.rect.bottom >= HEIGHT:
-            self.rect.bottom = HEIGHT
+        for y in range(14):
+            for x in range(29):
+                if l[y][x] == 'g':
+                    h = Platform(G,(cr[x],cr[y]))
+                    tiles.add(h)
+                    asl.add(h)
+                if l[y][x] == 'd':
+                    h = Platform(D,(cr[x],cr[y]))
+                    tiles.add(h)
+                    asl.add(h)
+                if l[y][x] == 'l1':
+                    h = Platform(L1,(cr[x],cr[y]))
+                    bads.add(h)
+                    asl.add(h)
+                if l[y][x] == 'l2':
+                    h = Platform(L2,(cr[x],cr[y]))
+                    bads.add(h)
+                    asl.add(h)
 
-class platform(pg.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.surf = pg.Surface((WIDTH, 20))
-        self.surf.fill((255,0,0))
-        self.rect = self.surf.get_rect(center = (WIDTH/2, HEIGHT - 10))
 
 
 #sprites
-player = Player()
+
+asl   = pg.sprite.Group()
+bads  = pg.sprite.Group()
+tiles = pg.sprite.Group()
+
+player = Player((cr[0],cr[8]))
+asl.add(player)
+
+read('data/1.lvl')
 
 
 clock = pg.time.Clock()
@@ -73,7 +85,7 @@ while running:
     for event in pg.event.get():
         # Did the user hit a key?
         if event.type == KEYDOWN:
-            # Was it the Escape key?.
+            # Was it the Escape key?
             if event.key == K_ESCAPE:
                 running = False
 
@@ -93,10 +105,14 @@ while running:
     #draw
     screen.fill(SKY)
 
-    screen.blit(player.surf, player.rect)
+    player.move()
+
+    for entity in asl:
+        screen.blit(entity.surf, entity.rect)
 
 
     #update
     pg.display.flip()
+    clock.tick(FPS)
 
 pg.quit()

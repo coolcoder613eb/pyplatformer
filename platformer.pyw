@@ -1,5 +1,5 @@
 import pygame as pg
-from pygame.locals import (K_UP,K_DOWN,K_LEFT,K_RIGHT,K_ESCAPE,KEYDOWN,QUIT,)
+from pygame.locals import (K_UP,K_DOWN,K_LEFT,K_RIGHT,K_ESCAPE,KEYDOWN,QUIT,K_SPACE)
 
 from sprites import Player, Platform
 
@@ -87,7 +87,9 @@ while running:
         if event.type == KEYDOWN:
             # Was it the Escape key?
             if event.key == K_ESCAPE:
-                running = False
+                running = False    
+            if event.key == K_SPACE:
+                player.jump(tiles)
 
         # Did the user click the window close button? If so, stop the loop.
         elif event.type == QUIT:
@@ -98,7 +100,7 @@ while running:
 
 
     # Update the player sprite based on user keypresses
-    player.update(pressed_keys)
+    player.update(tiles)
 
 
 

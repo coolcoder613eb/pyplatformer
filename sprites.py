@@ -33,7 +33,7 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0,0)
         self.acc = vec(0,0)
     def move(self):
-        self.acc = vec(0,0)
+        self.acc = vec(0,0.5)
     
         pressed_keys = pg.key.get_pressed()            
         if pressed_keys[K_LEFT]:
@@ -49,8 +49,22 @@ class Player(pg.sprite.Sprite):
             self.pos.x = WIDTH-8
         if self.pos.x < 18:
             self.pos.x = 18
+        if self.pos.y > HEIGHT:
+            self.pos.y = HEIGHT
+        if self.pos.y < 18:
+            self.pos.y = 18
             
-        self.rect.midbottom = self.pos   
+        self.rect.midbottom = self.pos
+    def update(self,tiles):
+        hits = pg.sprite.spritecollide(self ,tiles, False)
+        if self.vel.y > 0:
+            if hits:
+                self.pos.y = hits[0].rect.top + 1
+                self.vel.y = 0 
+    def jump(self,tiles):
+        hits = pg.sprite.spritecollide(self, tiles, False)
+        if hits:
+            self.vel.y = -15
 
 
 

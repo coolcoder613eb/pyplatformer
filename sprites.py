@@ -17,7 +17,7 @@ cr=[20,60,100,140,180,220,260,300,340,380,420,460,500,540,580,620,660,700,740,78
  
 G = 'assets/grass1.png'
 D = 'assets/soil1.png'
-P = 'assets/player1_01.png'
+P = 'assets/player1_011.png'
 L2 = 'assets/lava_l131.png'
 L1 = 'assets/lava_r161.png'
 
@@ -64,7 +64,7 @@ class Player(pg.sprite.Sprite):
     def jump(self,tiles):
         hits = pg.sprite.spritecollide(self, tiles, False)
         if hits:
-            self.vel.y = -15
+            self.vel.y = -10
 
 
 

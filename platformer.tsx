@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.9" tiledversion="1.9.1" name="platformor" tilewidth="40" tileheight="40" tilecount="38" columns="0" backgroundcolor="#87cefa">
+<tileset version="1.9" tiledversion="1.9.1" name="platformer" tilewidth="40" tileheight="40" tilecount="38" columns="0" backgroundcolor="#87cefa">
  <grid orientation="orthogonal" width="1" height="1"/>
  <transformations hflip="1" vflip="1" rotate="1" preferuntransformed="0"/>
  <tile id="0">

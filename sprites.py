@@ -23,6 +23,7 @@ L1 = 'assets/lava_r161.png'
 
 
 
+
 class Player(pg.sprite.Sprite):
     def __init__(self,coords):
         super().__init__()
@@ -45,10 +46,10 @@ class Player(pg.sprite.Sprite):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
          
-        if self.pos.x > WIDTH-8:
-            self.pos.x = WIDTH-8
-        if self.pos.x < 18:
-            self.pos.x = 18
+        if self.pos.x > WIDTH-13:
+            self.pos.x = WIDTH-13
+        if self.pos.x < 13:
+            self.pos.x = 13
         if self.pos.y > HEIGHT:
             self.pos.y = HEIGHT
         if self.pos.y < 18:
@@ -56,15 +57,52 @@ class Player(pg.sprite.Sprite):
             
         self.rect.midbottom = self.pos
     def update(self,tiles):
-        hits = pg.sprite.spritecollide(self ,tiles, False)
+        hits = pg.sprite.spritecollide(self ,tiles, False, collided = self.check)
+        #hits1 = pg.sprite.spritecollide(self ,tiles, False)
+##        if hits1:
+##            if hits1[0].rect.right >= self.rect.left:
+##                self.pos.x = hits[0].rect.right + 1
+##            if hits1[0].rect.left <= self.rect.right:
+##                self.pos.x = hits[0].rect.left - 1
         if self.vel.y > 0:
             if hits:
                 self.pos.y = hits[0].rect.top + 1
                 self.vel.y = 0 
     def jump(self,tiles):
-        hits = pg.sprite.spritecollide(self, tiles, False)
+        hits = pg.sprite.spritecollide(self, tiles, False, collided = self.check)
         if hits:
             self.vel.y = -10
+
+
+
+            
+    def check(self,s,o):
+        if pg.sprite.collide_rect(s,o):
+            #print(_1,_1.rect.right,_1.rect.left,_2,_2.rect.right,_2.rect.left)
+            if self.rect.bottom > o.rect.top:
+                if self.rect.left > o.rect.left + 1 or self.rect.right < o.rect.right - 1:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
+
+##            # check for collision in x direction
+##            #if o.rect.colliderect(self.rect.x, self.rect.y, self.width, self.height):
+##                #dx = 0
+##            # check for collision in y direction
+##            if o.rect.colliderect(self.rect.x, self.rect.y, self.width, self.height):
+##                # check if below the ground i.e. jumping
+##                if self.vel.y < 0:
+##                    self.pos.y = o.rect.bottom - self.rect.top
+##                    self.vel.y = 0
+##                # check if above the ground i.e. falling
+##                elif self.vel.y >= 0:
+##                    self.pos.y = o.rect.top - self.rect.bottom
+##                    self.vel.y = 0
+
 
 
 

@@ -18,15 +18,16 @@ cr=[20,60,100,140,180,220,260,300,340,380,420,460,500,540,580,620,660,700,740,78
 G = 'assets/grass1.png'
 D = 'assets/soil1.png'
 P = 'assets/player1_011.png'
-L2 = 'assets/lava_l131.png'
-L1 = 'assets/lava_r161.png'
+V = 'assets/lava_l131.png'
+L = 'assets/lava_r161.png'
 
 
 
 
 class Player(pg.sprite.Sprite):
-    def __init__(self,coords):
+    def __init__(self,coords, lives):
         super().__init__()
+        self.lives = lives
         self.img = pg.transform.scale(pg.image.load(P).convert_alpha(),(20,43))
         self.surf = self.img
         self.rect = self.surf.get_rect(bottomleft = (coords[0]-20,coords[1]-20))
@@ -35,7 +36,7 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0,0)
         self.acc = vec(0,0)
     def move(self):
-        self.acc = vec(0,0.5)
+        self.acc = vec(0,0.45)
     
         pressed_keys = pg.key.get_pressed()            
         if pressed_keys[K_LEFT]:
@@ -53,12 +54,15 @@ class Player(pg.sprite.Sprite):
             self.pos.x = WIDTH-10
         if self.pos.x < 10:
             self.pos.x = 10
-        if self.pos.y > HEIGHT +1:
-            self.pos.y = HEIGHT +1
+        if self.pos.y > HEIGHT:
+            self.pos.y = HEIGHT
+            print('GAME OVER!')
+            return True
         if self.pos.y < 22:
             self.pos.y = 22
             
         self.rect.midbottom = self.pos
+        return False
     def update(self,tiles):
         #print(tiles)
         hits = pg.sprite.spritecollide(self ,tiles, False, )#collided = self.check)
@@ -75,7 +79,7 @@ class Player(pg.sprite.Sprite):
     def jump(self,tiles):
         hits = pg.sprite.spritecollide(self, tiles, False )#collided = self.check)
         if hits:
-            self.vel.y = -10
+            self.vel.y = -9
 ##    def coll(self,tiles):
 ##        for tile in tiles:
 ##            if tile.rect.colliderect(self.rect.

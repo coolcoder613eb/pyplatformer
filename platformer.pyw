@@ -1,5 +1,7 @@
 import pygame as pg
 from pygame.locals import (K_UP,K_DOWN,K_LEFT,K_RIGHT,K_ESCAPE,KEYDOWN,QUIT,K_SPACE)
+import sys
+
 
 from sprites import Player, Platform
 
@@ -71,7 +73,7 @@ asl   = pg.sprite.Group()
 bads  = pg.sprite.Group()
 tiles = pg.sprite.Group()
 
-player = Player((cr[0],cr[8]))
+player = Player((cr[0],cr[8]),3)
 asl.add(player)
 
 read('data/1.lvl')
@@ -107,7 +109,14 @@ while running:
     #draw
     screen.fill(SKY)
 
-    player.move()
+    if player.move():
+        l = player.lives -1
+        if l == 0:
+            sys.exit()
+        player.kill()
+        player = Player((cr[0],cr[8]),l)
+        asl.add(player)
+        
 
     for entity in asl:
         screen.blit(entity.surf, entity.rect)

@@ -56,7 +56,7 @@ class Player(pg.sprite.Sprite):
             self.pos.x = 10
         if self.pos.y > HEIGHT:
             self.pos.y = HEIGHT
-            print('GAME OVER!')
+            print('a')
             return True
         if self.pos.y < 22:
             self.pos.y = 22
@@ -79,7 +79,7 @@ class Player(pg.sprite.Sprite):
     def jump(self,tiles):
         hits = pg.sprite.spritecollide(self, tiles, False )#collided = self.check)
         if hits:
-            self.vel.y = -9
+            self.vel.y = -19
 ##    def coll(self,tiles):
 ##        for tile in tiles:
 ##            if tile.rect.colliderect(self.rect.

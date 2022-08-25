@@ -76,7 +76,7 @@ tiles = pg.sprite.Group()
 player = Player((cr[0],cr[8]),3)
 asl.add(player)
 
-read('data/1.lvl')
+read('data/a.lvl')
 
 
 clock = pg.time.Clock()

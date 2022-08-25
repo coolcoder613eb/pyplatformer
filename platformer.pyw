@@ -26,6 +26,7 @@ D = 'assets/soil1.png'
 P = 'assets/player1_01.png'
 V = 'assets/lava_l131.png'
 L = 'assets/lava_r161.png'
+T = 'assets/t1.png'
 
 size = (WIDTH,HEIGHT)
 
@@ -64,6 +65,10 @@ def read(file):
                     h = Platform(V,(cr[x],cr[y]))
                     bads.add(h)
                     asl.add(h)
+                if l[y][x] == 't':
+                    h = Platform(T,(cr[x],cr[y]))
+                    tops.add(h)
+                    asl.add(h)
 
 
 
@@ -72,8 +77,9 @@ def read(file):
 asl   = pg.sprite.Group()
 bads  = pg.sprite.Group()
 tiles = pg.sprite.Group()
+tops = pg.sprite.Group()
 
-player = Player((cr[0],cr[8]),3)
+player = Player((cr[0],cr[7]),3)
 asl.add(player)
 
 read('data/a.lvl')
@@ -91,7 +97,7 @@ while running:
             if event.key == K_ESCAPE:
                 running = False    
             if event.key == K_SPACE:
-                player.jump(tiles)
+                player.jump(tiles,tops)
 
         # Did the user click the window close button? If so, stop the loop.
         elif event.type == QUIT:
@@ -102,7 +108,7 @@ while running:
 
 
     # Update the player sprite based on user keypresses
-    player.update(tiles)
+    player.update(tiles,tops)
 
 
 
@@ -112,7 +118,7 @@ while running:
     if player.move():
         l = player.lives -1
         if l == 0:
-            sys.exit()
+            running = False
         player.kill()
         player = Player((cr[0],cr[8]),l)
         asl.add(player)

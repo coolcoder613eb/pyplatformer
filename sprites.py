@@ -63,9 +63,9 @@ class Player(pg.sprite.Sprite):
             
         self.rect.midbottom = self.pos
         return False
-    def update(self,tiles):
+    def update(self,tiles,tops):
         #print(tiles)
-        hits = pg.sprite.spritecollide(self ,tiles, False, )#collided = self.check)
+        hits = pg.sprite.spritecollide(self ,tops, False, )#collided = self.check)
         #hits1 = pg.sprite.spritecollide(self ,tiles, False)
 ##        if hits1:
 ##            if hits1[0].rect.right >= self.rect.left:
@@ -75,11 +75,11 @@ class Player(pg.sprite.Sprite):
         if self.vel.y > 0:
             if hits:
                 self.pos.y = hits[0].rect.top + 1
-                self.vel.y = 0 
-    def jump(self,tiles):
-        hits = pg.sprite.spritecollide(self, tiles, False )#collided = self.check)
+                self.vel.y = 0
+    def jump(self,tiles,tops):
+        hits = pg.sprite.spritecollide(self, tops, False )#collided = self.check)
         if hits:
-            self.vel.y = -19
+            self.vel.y = -9
 ##    def coll(self,tiles):
 ##        for tile in tiles:
 ##            if tile.rect.colliderect(self.rect.

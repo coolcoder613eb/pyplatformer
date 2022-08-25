@@ -22,8 +22,8 @@ cr=[20,60,100,140,180,220,260,300,340,380,420,460,500,540,580,620,660,700,740,78
 G = 'assets/grass1.png'
 D = 'assets/soil1.png'
 P = 'assets/player1_01.png'
-L2 = 'assets/lava_l131.png'
-L1 = 'assets/lava_r161.png'
+V = 'assets/lava_l131.png'
+L = 'assets/lava_r161.png'
 
 size = (WIDTH,HEIGHT)
 
@@ -54,12 +54,12 @@ def read(file):
                     h = Platform(D,(cr[x],cr[y]))
                     tiles.add(h)
                     asl.add(h)
-                if l[y][x] == 'l1':
-                    h = Platform(L1,(cr[x],cr[y]))
+                if l[y][x] == 'l':
+                    h = Platform(L,(cr[x],cr[y]))
                     bads.add(h)
                     asl.add(h)
-                if l[y][x] == 'l2':
-                    h = Platform(L2,(cr[x],cr[y]))
+                if l[y][x] == 'v':
+                    h = Platform(V,(cr[x],cr[y]))
                     bads.add(h)
                     asl.add(h)
 

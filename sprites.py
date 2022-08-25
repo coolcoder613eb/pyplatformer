@@ -27,7 +27,8 @@ L1 = 'assets/lava_r161.png'
 class Player(pg.sprite.Sprite):
     def __init__(self,coords):
         super().__init__()
-        self.surf = pg.image.load(P).convert_alpha()
+        self.img = pg.transform.scale(pg.image.load(P).convert_alpha(),(20,43))
+        self.surf = self.img
         self.rect = self.surf.get_rect(bottomleft = (coords[0]-20,coords[1]-20))
 
         self.pos = vec((coords[0],coords[1]-20))
@@ -39,25 +40,28 @@ class Player(pg.sprite.Sprite):
         pressed_keys = pg.key.get_pressed()            
         if pressed_keys[K_LEFT]:
             self.acc.x = -ACC
+            self.surf = pg.transform.flip(self.img,True,False)
         if pressed_keys[K_RIGHT]:
             self.acc.x = ACC
+            self.surf = pg.transform.flip(self.img,False,False)
              
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
          
-        if self.pos.x > WIDTH-13:
-            self.pos.x = WIDTH-13
-        if self.pos.x < 13:
-            self.pos.x = 13
-        if self.pos.y > HEIGHT:
-            self.pos.y = HEIGHT
-        if self.pos.y < 18:
-            self.pos.y = 18
+        if self.pos.x > WIDTH-10:
+            self.pos.x = WIDTH-10
+        if self.pos.x < 10:
+            self.pos.x = 10
+        if self.pos.y > HEIGHT +1:
+            self.pos.y = HEIGHT +1
+        if self.pos.y < 22:
+            self.pos.y = 22
             
         self.rect.midbottom = self.pos
     def update(self,tiles):
-        hits = pg.sprite.spritecollide(self ,tiles, False, collided = self.check)
+        #print(tiles)
+        hits = pg.sprite.spritecollide(self ,tiles, False, )#collided = self.check)
         #hits1 = pg.sprite.spritecollide(self ,tiles, False)
 ##        if hits1:
 ##            if hits1[0].rect.right >= self.rect.left:
@@ -69,10 +73,12 @@ class Player(pg.sprite.Sprite):
                 self.pos.y = hits[0].rect.top + 1
                 self.vel.y = 0 
     def jump(self,tiles):
-        hits = pg.sprite.spritecollide(self, tiles, False, collided = self.check)
+        hits = pg.sprite.spritecollide(self, tiles, False )#collided = self.check)
         if hits:
             self.vel.y = -10
-
+##    def coll(self,tiles):
+##        for tile in tiles:
+##            if tile.rect.colliderect(self.rect.
 
 
             
@@ -112,7 +118,7 @@ class Player(pg.sprite.Sprite):
 class Platform(pg.sprite.Sprite):
     def __init__(self,image,coords):
         super().__init__()
-        self.surf = pg.image.load(image).convert_alpha()
+        self.surf = pg.transform.scale(pg.image.load(image).convert_alpha(),(40,40))
         self.rect = self.surf.get_rect(center = coords)
 
 

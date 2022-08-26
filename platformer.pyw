@@ -26,7 +26,7 @@ D = 'assets/soil1.png'
 P = 'assets/player1_01.png'
 V = 'assets/lava_l131.png'
 L = 'assets/lava_r161.png'
-T = 'assets/t1.png'
+T = 'assets/t2.png'
 
 size = (WIDTH,HEIGHT)
 
@@ -65,10 +65,10 @@ def read(file):
                     h = Platform(V,(cr[x],cr[y]))
                     bads.add(h)
                     asl.add(h)
-                if l[y][x] == 't':
-                    h = Platform(T,(cr[x],cr[y]))
-                    tops.add(h)
-                    asl.add(h)
+##                if l[y][x] == 't':
+##                    h = Platform(T,(cr[x],cr[y]))
+##                    tops.add(h)
+##                    asl.add(h)
 
 
 

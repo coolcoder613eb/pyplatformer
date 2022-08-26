@@ -17,7 +17,7 @@ cr=[20,60,100,140,180,220,260,300,340,380,420,460,500,540,580,620,660,700,740,78
  
 G = 'assets/grass1.png'
 D = 'assets/soil1.png'
-P = 'assets/player1_011.png'
+P = 'assets/knight.png'
 V = 'assets/lava_l131.png'
 L = 'assets/lava_r161.png'
 
@@ -28,7 +28,7 @@ class Player(pg.sprite.Sprite):
     def __init__(self,coords, lives):
         super().__init__()
         self.lives = lives
-        self.img = pg.transform.scale(pg.image.load(P).convert_alpha(),(20,43))
+        self.img = pg.transform.scale(pg.image.load(P).convert_alpha(),(20,40))
         self.surf = self.img
         self.rect = self.surf.get_rect(bottomleft = (coords[0]-20,coords[1]-20))
 
@@ -65,7 +65,7 @@ class Player(pg.sprite.Sprite):
         return False
     def update(self,tiles,tops):
         #print(tiles)
-        hits = pg.sprite.spritecollide(self ,tops, False, )#collided = self.check)
+        hits = pg.sprite.spritecollide(self ,tiles, False, )#collided = self.check)
         #hits1 = pg.sprite.spritecollide(self ,tiles, False)
 ##        if hits1:
 ##            if hits1[0].rect.right >= self.rect.left:
@@ -77,7 +77,7 @@ class Player(pg.sprite.Sprite):
                 self.pos.y = hits[0].rect.top + 1
                 self.vel.y = 0
     def jump(self,tiles,tops):
-        hits = pg.sprite.spritecollide(self, tops, False )#collided = self.check)
+        hits = pg.sprite.spritecollide(self, tiles, False )#collided = self.check)
         if hits:
             self.vel.y = -9
 ##    def coll(self,tiles):
@@ -122,7 +122,7 @@ class Player(pg.sprite.Sprite):
 class Platform(pg.sprite.Sprite):
     def __init__(self,image,coords):
         super().__init__()
-        self.surf = pg.transform.scale(pg.image.load(image).convert_alpha(),(40,40))
+        self.surf = pg.image.load(image).convert_alpha()#pg.transform.scale(pg.image.load(image).convert_alpha(),(40,40))
         self.rect = self.surf.get_rect(center = coords)
 
 
